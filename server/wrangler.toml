@@ -4,6 +4,7 @@ zone_id = ""
 account_id = ""
 route = ""
 workers_dev = true
+vars = { CLIENT_ORIGIN_URL = "http://localhost:3002" }
 kv_namespaces = [
 	 { binding = "MY_KV", preview_id = "1e623bf51b2442d782d61234079c67e6", id = "f47bddb3fd61448187157edf550b7d46" }
 ]
@@ -12,3 +13,10 @@ kv_namespaces = [
 command = "npm install && npm run build"
 [build.upload]
 format = "service-worker"
+
+[env.production]
+name = "my-worker"
+vars = { ENVIRONMENT = "production", CLIENT_ORIGIN_URL = "https://workart.pages.dev" }
+kv_namespaces = [
+  { binding = "MY_KV", id = "f47bddb3fd61448187157edf550b7d46" }
+]

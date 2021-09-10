@@ -4,34 +4,38 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import Art from "../components/Art.vue";
+import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
-import { onMounted, ref } from "vue-demi";
+import { onMounted, ref, inject } from "vue";
 
-const artboard = ref(null);
+export default {
+  components: { Art },
+  setup(props, config) {
+    const $api: Api = inject("$api");
+    const artboard = ref(null);
 
-function serializeArtboard(artboard: ArtBoard): string {
-  return JSON.stringify(artboard);
-}
+    function serializeArtboard(artboard: ArtBoard): string {
+      return JSON.stringify(artboard);
+    }
 
-onMounted(() => {
-  fetch("/api")
-    .then((res) => res.json())
-    .then((res) => {
-      artboard.value = res;
+    onMounted(() => {
+      $api.get("/api").then((res) => {
+        artboard.value = res;
+      });
     });
-});
 
-function onArtUpdate(artboard: ArtBoard) {
-  fetch("/api", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json;charset=UTF-8",
-    },
-    body: serializeArtboard(artboard),
-  });
-}
+    function onArtUpdate(artboard: ArtBoard) {
+      return $api.post("/api", serializeArtboard(artboard));
+    }
+
+    return {
+      artboard,
+      onArtUpdate,
+    };
+  },
+};
 </script>
 
 <style scoped></style>

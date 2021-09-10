@@ -33,8 +33,8 @@ export interface ArtBoard {
 }
 
 const emit = defineEmits(["update"]);
-const columns = 10;
-const rows = 10;
+const columns = 30;
+const rows = 30;
 const selectedColor = ref("blue");
 const board: Ref<ArtBoard> = ref({
   grid: props?.artboard.grid || {},
@@ -56,7 +56,7 @@ function paint(row: number, column: number, el: HTMLElement) {
 
 <style scoped>
 table {
-  width: 300px;
+  width: 3000px;
   border-collapse: collapse;
 }
 td {
