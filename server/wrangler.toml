@@ -1,0 +1,14 @@
+name = "workart"
+type = "javascript"
+zone_id = ""
+account_id = ""
+route = ""
+workers_dev = true
+kv_namespaces = [
+	 { binding = "MY_KV", preview_id = "1e623bf51b2442d782d61234079c67e6", id = "f47bddb3fd61448187157edf550b7d46" }
+]
+
+[build]
+command = "npm install && npm run build"
+[build.upload]
+format = "service-worker"
