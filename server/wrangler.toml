@@ -1,4 +1,4 @@
-name = "workart"
+name = "workart-dev"
 type = "javascript"
 zone_id = ""
 account_id = ""
@@ -15,7 +15,7 @@ command = "npm install && npm run build"
 format = "service-worker"
 
 [env.production]
-name = "my-worker"
+name = "workart"
 vars = { ENVIRONMENT = "production", CLIENT_ORIGIN_URL = "https://workart.pages.dev" }
 kv_namespaces = [
   { binding = "MY_KV", id = "f47bddb3fd61448187157edf550b7d46" }

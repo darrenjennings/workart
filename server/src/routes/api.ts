@@ -1,8 +1,9 @@
+import { NOTFOUND } from 'dns'
+
 declare const CLIENT_ORIGIN_URL: string
 declare const MY_KV: KVNamespace
 
-export async function handleRequest(request: Request): Promise<Response> {
-  console.log(CLIENT_ORIGIN_URL)
+export default async (request: Request): Promise<Response> => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': CLIENT_ORIGIN_URL,
     'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
@@ -17,6 +18,19 @@ export async function handleRequest(request: Request): Promise<Response> {
     const artBoard: string | null = await MY_KV.get(
       new Date().toISOString().split('T')[0],
     )
+
+    if (!artBoard) {
+      return new Response(
+        JSON.stringify({
+          message: 'Not Found',
+        }),
+        {
+          status: 404,
+          headers: corsHeaders,
+        },
+      )
+    }
+
     return new Response(JSON.stringify(JSON.parse(artBoard || '')), {
       headers: {
         ...corsHeaders,
