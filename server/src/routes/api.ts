@@ -50,7 +50,7 @@ export default async (request: Request): Promise<Response> => {
       const dt = new Date().toISOString().split('T')[0]
       const { x, y, color } = await request.json()
 
-      const artBoard: string | null = await MY_KV.get(dt)
+      const artBoard: string = (await MY_KV.get(dt)) || '{"grid": {}}'
       const resArtBoard: ArtBoard = updateArtBoard(
         artBoard ? JSON.parse(artBoard) : {},
         x,

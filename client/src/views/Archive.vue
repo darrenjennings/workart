@@ -18,7 +18,7 @@ function getDaysArray(start, end) {
   return arr;
 }
 
-const dates = getDaysArray(new Date("2021-09-10"), new Date());
+const dates = getDaysArray(new Date("2021-09-11"), new Date());
 const datesISO = dates.map((d) => d.toISOString().split("T")[0]).reverse();
 </script>
 
