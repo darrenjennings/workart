@@ -42,7 +42,6 @@ const board: Ref<ArtBoard> = ref({
 });
 
 function paint(row: number, column: number, el: HTMLElement) {
-  if (el.style.backgroundColor !== "") return;
   const payload = { color: props.color };
   if (!board.value.grid[row]) {
     board.value.grid[row] = { [column]: payload };

@@ -1,12 +1,13 @@
 <template>
-  <div class="container flex justify-center">
+  <div class="container flex flex-col justify-center">
+    <input v-model="color" class="absolute top-0 left-0" type="color" /><br />
     <Art
+      class="w-full"
       v-if="artboard !== null"
       :artboard="artboard"
       :color="color"
       @update="onArtUpdate"
     />
-    <input v-model="color" type="color" />
   </div>
 </template>
 
@@ -21,7 +22,7 @@ export default {
   setup(props, config) {
     const $api: Api = inject("$api");
     const artboard = ref(null);
-    const color = ref("black");
+    const color = ref("#000000");
 
     function serializeArtboard(artboard: ArtBoard): string {
       return JSON.stringify(artboard);
