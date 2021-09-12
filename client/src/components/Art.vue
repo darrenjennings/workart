@@ -3,7 +3,7 @@
     <tbody>
       <tr v-for="column in columns" :key="column">
         <td
-          @click="(e) => paint(row, column, e.target)"
+          @click="(e) => paint(row, column, color, e.target)"
           v-for="row in rows"
           :key="row"
           :style="{
@@ -29,7 +29,7 @@ const props = defineProps<{
 }>();
 
 export interface ArtBoard {
-  grid: {} | undefined;
+  grid: { [i: number]: { [j: number]: { color: string } } } | undefined;
   timestamp: number;
 }
 
@@ -41,15 +41,15 @@ const board: Ref<ArtBoard> = ref({
   timestamp: Date.now(),
 });
 
-function paint(row: number, column: number, el: HTMLElement) {
-  const payload = { color: props.color };
-  if (!board.value.grid[row]) {
-    board.value.grid[row] = { [column]: payload };
+function paint(x: number, y: number, color: string, el: HTMLElement) {
+  const cellData = { color };
+  if (!board.value.grid[x]) {
+    board.value.grid[x] = { [y]: cellData };
   } else {
-    board.value.grid[row][column] = payload;
+    board.value.grid[x][y] = cellData;
   }
-  el.style.backgroundColor = props.color;
-  emit("update", board.value);
+  el.style.backgroundColor = color;
+  emit("update", x, y, color);
 }
 </script>
 

@@ -15,10 +15,10 @@ export default class Api {
     });
   }
 
-  post(path: string, body: string) {
+  post(path: string, body: Object) {
     return fetch(`${this.url}${path}`, {
       method: "POST",
-      body,
+      body: JSON.stringify(body),
     }).then((res) => {
       try {
         return res.json();

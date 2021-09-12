@@ -1,7 +1,8 @@
 <template>
-  <div class="container flex flex-col justify-center">
+  <div class="container flex justify-center">
     <input v-model="color" class="absolute top-0 left-0" type="color" /><br />
     <Art
+      :key="artboard.timestamp"
       class="w-full"
       v-if="artboard !== null"
       :artboard="artboard"
@@ -34,8 +35,16 @@ export default {
       });
     });
 
-    function onArtUpdate(artboard: ArtBoard) {
-      return $api.post("/api", serializeArtboard(artboard));
+    async function onArtUpdate(x, y, color) {
+      const board = await $api.post("/api", {
+        x,
+        y,
+        color,
+      });
+      artboard.value = {
+        grid: board.grid,
+        timestamp: Date.now(),
+      };
     }
 
     return {
