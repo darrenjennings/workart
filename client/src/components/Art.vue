@@ -3,7 +3,7 @@
     <tbody>
       <tr v-for="column in columns" :key="column">
         <td
-          @click="(e) => paint(row, column, color, e.target)"
+          @click="(e) => !readonly && paint(row, column, color, e.target)"
           v-for="row in rows"
           :key="row"
           :style="{
@@ -20,13 +20,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits } from "vue";
+import { ref, withDefaults, defineProps, defineEmits } from "vue";
 import type { Ref } from "vue";
 
-const props = defineProps<{
-  artboard: ArtBoard;
-  color: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    artboard: ArtBoard;
+    color: string;
+    readonly?: boolean;
+  }>(),
+  {
+    readonly: false,
+  }
+);
 
 export interface ArtBoard {
   grid: { [i: number]: { [j: number]: { color: string } } } | undefined;

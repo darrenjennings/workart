@@ -25,10 +25,6 @@ export default {
     const artboard = ref(null);
     const color = ref("#000000");
 
-    function serializeArtboard(artboard: ArtBoard): string {
-      return JSON.stringify(artboard);
-    }
-
     onMounted(() => {
       $api.get("/api").then((res) => {
         artboard.value = res;
