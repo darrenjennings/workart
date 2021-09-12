@@ -25,8 +25,6 @@ export default async (request: Request): Promise<Response> => {
         ? request.url.match(/[0-9-]{10}/)?.[0] || today
         : today
 
-      console.log({ dt, url: request.url })
-
       const artBoard: string | null = await MY_KV.get(dt)
 
       if (!artBoard) {

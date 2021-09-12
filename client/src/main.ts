@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import Home from "./views/Home.vue";
 import ViewArtBoard from "./views/ViewArtBoard.vue";
+import Archive from "./views/Archive.vue";
 import "./index.css";
 import { createRouter, createWebHistory } from "vue-router";
 import Api from "./service/api";
@@ -24,6 +25,11 @@ const router = createRouter({
       path: "/:date",
       component: ViewArtBoard,
       name: "View",
+    },
+    {
+      path: "/archive",
+      component: Archive,
+      name: "Archive",
     },
   ],
 });

@@ -1,6 +1,6 @@
 <template>
-  <div class="container flex justify-center">
-    <input v-model="color" class="absolute top-0 left-0" type="color" /><br />
+  <div>
+    <input v-model="color" class="absolute top-0 left-0" type="color" />
     <Art
       :key="artboard.timestamp"
       class="w-full"
