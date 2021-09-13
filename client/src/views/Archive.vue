@@ -7,12 +7,9 @@
 </template>
 
 <script setup lang="ts">
-function getDaysArray(start, end) {
-  for (
-    var arr = [], dt = new Date(start);
-    dt <= end;
-    dt.setDate(dt.getDate() + 1)
-  ) {
+function getDaysArray(start: Date, end: Date) {
+  const arr = [];
+  for (const dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
     arr.push(new Date(dt));
   }
   return arr;
@@ -24,7 +21,6 @@ const datesISO = dates.map((d) => d.toISOString().split("T")[0]).reverse();
 
 <style scoped>
 * {
-  /* font-family: monospace !important; */
   all: revert;
 }
 </style>

@@ -22,8 +22,8 @@ export default {
   components: { Art },
   setup(props, config) {
     const route = useRoute();
-    const $api: Api = inject("$api");
-    const artboard = ref(null);
+    const $api = inject<Api>("$api");
+    const artboard = ref<ArtBoard | null>(null);
     const color = ref("#000000");
 
     onMounted(() => {

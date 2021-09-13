@@ -7,12 +7,6 @@ import "./index.css";
 import { createRouter, createWebHistory } from "vue-router";
 import Api from "./service/api";
 
-declare module "@vue/runtime-core" {
-  export interface ComponentCustomProperties {
-    $api: Api;
-  }
-}
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [

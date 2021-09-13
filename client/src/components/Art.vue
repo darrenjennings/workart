@@ -49,10 +49,12 @@ const board: Ref<ArtBoard> = ref({
 
 function paint(x: number, y: number, color: string, el: HTMLElement) {
   const cellData = { color };
-  if (!board.value.grid[x]) {
+  if (board.value?.grid && !board.value?.grid[x]) {
     board.value.grid[x] = { [y]: cellData };
   } else {
-    board.value.grid[x][y] = cellData;
+    if (board.value?.grid?.[x]) {
+      board.value.grid[x][y] = cellData;
+    }
   }
   el.style.backgroundColor = color;
   emit("update", x, y, color);
