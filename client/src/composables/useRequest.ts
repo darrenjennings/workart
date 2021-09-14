@@ -14,7 +14,7 @@ export default function useRequest<Data = unknown>(
   const $api = inject<Api>("$api");
 
   return useSWRV(key, (url) => $api?.get<Data>(url), {
-    dedupingInterval: 30000,
+    dedupingInterval: 120000, // two minutes
     shouldRetryOnError: false,
     ...config,
   });
