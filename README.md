@@ -16,4 +16,4 @@ Summer Challenge](https://challenge.developers.cloudflare.com/). This is a light
 
 Each pixel artboard is wiped clean each day, and anyone can add pixels to the board. There is no guarantee your pixel will stay the same and each new day resets the board. After the day has passed, the art is frozen and can be accessed via the archive.
 
-![](screenshot.png)
+![](screenshot1.png)
