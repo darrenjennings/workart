@@ -25,7 +25,11 @@ export default {
   setup() {
     const color = ref("#000000");
     const $api = inject<Api>("$api");
-    const { data, error } = useRequest<ArtBoard>(`/api`);
+    const { data, error } = useRequest<ArtBoard>(`/api`, {
+      shouldRetryOnError: false,
+      dedupingInterval: 1000,
+      revalidateOnFocus: true,
+    });
 
     async function onArtUpdate(x: number, y: number, color: string) {
       const board = await $api?.post("/api", {

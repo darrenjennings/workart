@@ -9,7 +9,11 @@
     />
     <div v-if="error">
       <b>{{ error.status }}</b>
-      <span class="font-thin px-2">|</span><span>{{ error.statusText }}</span>
+      <span class="font-thin px-2">|</span
+      ><span>{{
+        error.statusText ||
+        (error.status == "404" ? "Not found." : "There was an error.")
+      }}</span>
     </div>
   </div>
 </template>
