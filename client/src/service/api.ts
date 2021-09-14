@@ -5,8 +5,11 @@ export default class Api {
     this.url = url;
   }
 
-  get(path: string) {
+  get<T>(path: string): Promise<T> {
     return fetch(`${this.url}${path}`).then((res) => {
+      if (!res.ok) {
+        throw res;
+      }
       try {
         return res.json();
       } catch (e) {

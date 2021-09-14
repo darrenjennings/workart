@@ -2,38 +2,37 @@
   <div class="container flex justify-center">
     <Art
       class="w-full"
-      v-if="artboard !== null"
-      :artboard="artboard"
+      v-if="data !== undefined"
+      :artboard="data"
       :color="color"
       readonly
     />
+    <div v-if="error">
+      <b>{{ error.status }}</b>
+      <span class="font-thin px-2">|</span><span>{{ error.statusText }}</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import useRequest from "../composables/useRequest";
 
 import Art from "../components/Art.vue";
-import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
-import { onMounted, ref, inject } from "vue";
 
 export default {
   components: { Art },
   setup(props, config) {
     const route = useRoute();
-    const $api = inject<Api>("$api");
-    const artboard = ref<ArtBoard | null>(null);
-    const color = ref("#000000");
+    const color = ref("#000");
 
-    onMounted(() => {
-      $api.get(`/api/${route.params.date}`).then((res) => {
-        artboard.value = res;
-      });
-    });
+    const { data, error } = useRequest<ArtBoard>(`/api/${route.params.date}`);
 
     return {
-      artboard,
+      data,
+      error,
       color,
     };
   },

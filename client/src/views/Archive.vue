@@ -1,7 +1,9 @@
 <template>
   <ul class="font-mono">
     <li :key="date" v-for="date in datesISO">
-      <a :href="date">{{ date }}</a>
+      <router-link :to="{ name: 'View', params: { date } }">
+        {{ date }}
+      </router-link>
     </li>
   </ul>
 </template>

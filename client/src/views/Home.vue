@@ -3,33 +3,29 @@
     <input v-model="color" type="color" />
   </div>
   <Art
-    :key="artboard.timestamp"
+    v-if="grid"
+    :key="grid.timestamp"
     class="w-full"
-    v-if="artboard !== null"
-    :artboard="artboard"
+    :artboard="grid"
     :color="color"
     @update="onArtUpdate"
   />
 </template>
 
 <script lang="ts">
+import { ref, inject, computed } from "vue";
 import Art from "../components/Art.vue";
 import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
-import { onMounted, ref, inject } from "vue";
+import useRequest, { updateCache } from "../composables/useRequest";
+import { getDefaultDateFormat } from "../dateUtils";
 
 export default {
   components: { Art },
   setup() {
-    const $api = inject<Api>("$api");
-    const artboard = ref<ArtBoard | null>(null);
     const color = ref("#000000");
-
-    onMounted(() => {
-      $api?.get("/api").then((res) => {
-        artboard.value = res;
-      });
-    });
+    const $api = inject<Api>("$api");
+    const { data, error } = useRequest<ArtBoard>(`/api`);
 
     async function onArtUpdate(x: number, y: number, color: string) {
       const board = await $api?.post("/api", {
@@ -37,14 +33,24 @@ export default {
         y,
         color,
       });
-      artboard.value = {
+
+      // update the caches
+      updateCache(`/api`, {
         grid: board.grid,
         timestamp: Date.now(),
-      };
+      });
+      updateCache(`/api/${getDefaultDateFormat(new Date())}`, {
+        grid: board.grid,
+        timestamp: Date.now(),
+      });
     }
 
+    const grid = computed<ArtBoard>(() => {
+      return data.value ?? { grid: {}, timestamp: Date.now() };
+    });
+
     return {
-      artboard,
+      grid,
       color,
       onArtUpdate,
     };
