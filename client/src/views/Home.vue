@@ -1,13 +1,13 @@
 <template>
   <div class="absolute top-0 left-0">
-    <input v-model="color" type="color" />
+    <input v-model="selectedColor" type="color" />
   </div>
   <Art
     v-if="grid"
     :key="grid.timestamp"
     class="w-full"
     :artboard="grid"
-    :color="color"
+    :color="selectedColor"
     @update="onArtUpdate"
   />
 </template>
@@ -23,7 +23,7 @@ import { getDefaultDateFormat } from "../dateUtils";
 export default {
   components: { Art },
   setup() {
-    const color = ref("#000000");
+    const selectedColor = ref("#000000");
     const $api = inject<Api>("$api");
     const { data, error } = useRequest<ArtBoard>(`/api`, {
       shouldRetryOnError: false,
@@ -31,7 +31,12 @@ export default {
       revalidateOnFocus: true,
     });
 
-    async function onArtUpdate(x: number, y: number, color: string) {
+    async function onArtUpdate(color: string, x?: number, y?: number) {
+      // If only color is incoming, then we can just update the selected color
+      if (x === undefined && y === undefined) {
+        selectedColor.value = color;
+        return;
+      }
       const board = await $api?.post("/api", {
         x,
         y,
@@ -55,7 +60,7 @@ export default {
 
     return {
       grid,
-      color,
+      selectedColor,
       onArtUpdate,
     };
   },

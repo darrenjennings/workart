@@ -3,7 +3,8 @@
     <tbody>
       <tr v-for="column in columns" :key="column">
         <td
-          @click="(e) => !readonly && paint(row, column, color, e.target)"
+          @click.meta="pickColor"
+          @click.exact="(e) => !readonly && paint(row, column, color, e.target)"
           v-for="row in rows"
           :key="row"
           :style="{
@@ -47,6 +48,25 @@ const board: Ref<ArtBoard> = ref({
   timestamp: Date.now(),
 });
 
+function rgbToHex(r: string, g: string, b: string) {
+  const hex = (i: string) => parseInt(i).toString(16);
+  return "#" + hex(r) + hex(g) + hex(b);
+}
+
+function pickColor(e) {
+  const [r, g, b] =
+    e.target.style.backgroundColor
+      ?.match(/rgb\((.*)\)/)?.[1]
+      .split(",")
+      .filter(Boolean) || [];
+  emit(
+    "update",
+    r && g && b ? rgbToHex(r, g, b) : "#ffffff",
+    undefined,
+    undefined
+  );
+}
+
 function paint(x: number, y: number, color: string, el: HTMLElement) {
   const cellData = { color };
   if (board.value?.grid && !board.value?.grid[x]) {
@@ -57,7 +77,7 @@ function paint(x: number, y: number, color: string, el: HTMLElement) {
     }
   }
   el.style.backgroundColor = color;
-  emit("update", x, y, color);
+  emit("update", color, x, y);
 }
 </script>
 
