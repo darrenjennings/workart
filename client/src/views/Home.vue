@@ -1,29 +1,31 @@
 <template>
-  <div class="absolute top-0 left-0">
-    <input v-model="selectedColor" type="color" />
+  <div class="absolute" v-if="grid !== undefined">
+    <Art
+      :artboard="grid"
+      :active-cell="activeCell"
+      :color="selectedColor"
+      @update="onArtUpdate"
+    />
+    <div class="absolute -top-10 right-0">
+      <ColorPicker v-model="selectedColor" />
+    </div>
   </div>
-  <Art
-    v-if="grid"
-    :key="grid.timestamp"
-    class="w-full"
-    :artboard="grid"
-    :color="selectedColor"
-    @update="onArtUpdate"
-  />
 </template>
 
 <script lang="ts">
 import { ref, inject, computed } from "vue";
 import Art from "../components/Art.vue";
+import ColorPicker from "../components/ColorPicker.vue";
 import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
 import useRequest, { updateCache } from "../composables/useRequest";
 import { getDefaultDateFormat } from "../dateUtils";
 
 export default {
-  components: { Art },
+  components: { Art, ColorPicker },
   setup() {
     const selectedColor = ref("#000000");
+    const activeCell = ref([]);
     const $api = inject<Api>("$api");
     const { data, error } = useRequest<ArtBoard>(`/api`, {
       shouldRetryOnError: false,
@@ -37,6 +39,7 @@ export default {
         selectedColor.value = color;
         return;
       }
+
       const board = await $api?.post("/api", {
         x,
         y,
@@ -52,15 +55,18 @@ export default {
         grid: board.grid,
         timestamp: Date.now(),
       });
+      activeCell.value = [x, y];
     }
 
-    const grid = computed<ArtBoard>(() => {
-      return data.value ?? { grid: {}, timestamp: Date.now() };
+    const grid = computed<ArtBoard | null>(() => {
+      return data.value ?? { grid: null, timestamp: Date.now() };
     });
 
     return {
       grid,
+      error,
       selectedColor,
+      activeCell,
       onArtUpdate,
     };
   },
