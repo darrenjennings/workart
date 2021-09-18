@@ -3,7 +3,11 @@
     <tbody>
       <tr v-for="column in columns" :key="column">
         <td
+          :tabindex="0"
           @click.meta="pickColor"
+          @keydown.enter="
+            (e) => !readonly && paint(row, column, color, e.target)
+          "
           @click.exact="(e) => !readonly && paint(row, column, color, e.target)"
           v-for="row in rows"
           :key="row"
@@ -21,12 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, withDefaults } from "vue";
+import { ref, watchEffect, withDefaults } from "vue";
 import type { Ref } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    artboard: ArtBoard;
+    artboard: ArtBoard | null;
     color: string;
     readonly?: boolean;
   }>(),
@@ -35,21 +39,29 @@ const props = withDefaults(
   }
 );
 
-export interface ArtBoard {
+export type ArtBoard = {
   grid: { [i: number]: { [j: number]: { color: string } } } | undefined;
   timestamp: number;
-}
+};
 
 const emit = defineEmits(["update"]);
 const columns = 20;
 const rows = 20;
+
 const board: Ref<ArtBoard> = ref({
-  grid: props?.artboard.grid || {},
+  grid: props?.artboard?.grid || {},
   timestamp: Date.now(),
 });
 
+watchEffect(() => {
+  board.value.grid = props.artboard?.grid;
+});
+
 function rgbToHex(r: string, g: string, b: string) {
-  const hex = (i: string) => parseInt(i).toString(16);
+  const hex = (i: string) => {
+    const hex = parseInt(i).toString(16);
+    return hex.length == 1 ? `0${hex}` : hex;
+  };
   return "#" + hex(r) + hex(g) + hex(b);
 }
 
