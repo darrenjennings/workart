@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, withDefaults } from "vue";
 import type { Ref } from "vue";
+import { rgbToHex } from "../colorUtils";
 
 const props = withDefaults(
   defineProps<{
@@ -56,14 +57,6 @@ const board: Ref<ArtBoard> = ref({
 watchEffect(() => {
   board.value.grid = props.artboard?.grid;
 });
-
-function rgbToHex(r: string, g: string, b: string) {
-  const hex = (i: string) => {
-    const hex = parseInt(i).toString(16);
-    return hex.length == 1 ? `0${hex}` : hex;
-  };
-  return "#" + hex(r) + hex(g) + hex(b);
-}
 
 function pickColor(e) {
   const [r, g, b] =

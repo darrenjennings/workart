@@ -20,11 +20,12 @@ import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
 import useRequest, { updateCache } from "../composables/useRequest";
 import { getDefaultDateFormat } from "../dateUtils";
+import { randomHexColor } from "../colorUtils";
 
 export default {
   components: { Art, ColorPicker },
   setup() {
-    const selectedColor = ref("#000000");
+    const selectedColor = ref(randomHexColor());
     const activeCell = ref([]);
     const $api = inject<Api>("$api");
     const { data, error } = useRequest<ArtBoard>(`/api`, {
