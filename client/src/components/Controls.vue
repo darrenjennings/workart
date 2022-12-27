@@ -28,9 +28,11 @@ import { randomHexColor } from "../colorUtils";
 
 const props = withDefaults(
   defineProps<{
+    selectedColor?: string;
     hasColorPicker?: boolean;
   }>(),
   {
+    selectedColor: undefined,
     hasColorPicker: false,
   }
 );
@@ -38,11 +40,11 @@ const props = withDefaults(
 const emit = defineEmits(["onColorUpdate", "onToggleGridLines"]);
 
 const hasGridLines = ref(true);
-const selectedColor = ref();
+const newColor = ref(props.selectedColor);
 
 function recomputeColor() {
-  selectedColor.value = randomHexColor();
-  emit("onColorUpdate", selectedColor.value);
+  newColor.value = randomHexColor();
+  emit("onColorUpdate", newColor.value);
 }
 
 function toggleGridLines() {
@@ -50,7 +52,6 @@ function toggleGridLines() {
   emit("onToggleGridLines", hasGridLines.value);
 }
 
-// Initialize
 recomputeColor();
 </script>
 

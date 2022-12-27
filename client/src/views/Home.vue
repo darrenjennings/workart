@@ -9,6 +9,7 @@
     />
     <controls
       has-color-picker
+      :selected-color="selectedColor"
       @onColorUpdate="(color) => (selectedColor = color)"
       @onToggleGridLines="(toggled) => (hasGridLines = toggled)"
     />
