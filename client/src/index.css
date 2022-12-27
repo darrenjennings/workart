@@ -5,3 +5,7 @@
 .w-content {
   width: 600px;
 }
+
+.my-focus-ring {
+  @apply focus:ring-blue-600 focus:ring-4 focus:ring-offset-2 focus:ring-opacity-75 transition duration-200 ease-in-out;
+}

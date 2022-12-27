@@ -7,7 +7,10 @@
       @update="onArtUpdate"
     />
     <div class="absolute -top-10 right-0">
-      <ColorPicker v-model="selectedColor" />
+      <button class="my-focus-ring float-left mr-2" @click="recomputeColor">
+        <refresh-icon />
+      </button>
+      <ColorPicker class="my-focus-ring" v-model="selectedColor" />
     </div>
   </div>
 </template>
@@ -18,12 +21,13 @@ import Art from "../components/Art.vue";
 import ColorPicker from "../components/ColorPicker.vue";
 import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
+import RefreshIcon from "../components/RefreshIcon.vue";
 import useRequest, { updateCache } from "../composables/useRequest";
 import { getDefaultDateFormat } from "../dateUtils";
 import { randomHexColor } from "../colorUtils";
 
 export default {
-  components: { Art, ColorPicker },
+  components: { Art, ColorPicker, RefreshIcon },
   setup() {
     const selectedColor = ref(randomHexColor());
     const activeCell = ref([]);
@@ -33,6 +37,10 @@ export default {
       dedupingInterval: 1000,
       revalidateOnFocus: true,
     });
+
+    function recomputeColor() {
+      selectedColor.value = randomHexColor();
+    }
 
     async function onArtUpdate(color: string, x?: number, y?: number) {
       // If only color is incoming, then we can just update the selected color
@@ -67,11 +75,10 @@ export default {
       grid,
       error,
       selectedColor,
+      recomputeColor,
       activeCell,
       onArtUpdate,
     };
   },
 };
 </script>
-
-<style scoped></style>

@@ -1,20 +1,9 @@
 <template>
-  <div>
-    <input
-      class="
-        focus:ring-blue-600
-        focus:ring-4
-        focus:ring-offset-2
-        focus:ring-opacity-75
-        transition
-        duration-200
-        ease-in-out
-      "
-      type="color"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
-  </div>
+  <input
+    type="color"
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
+  />
 </template>
 
 <script lang="ts">
