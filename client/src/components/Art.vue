@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table :class="hasGridLines ? `grid-lines` : ''">
     <tbody>
       <tr v-for="column in columns" :key="column">
         <td
@@ -11,6 +11,8 @@
           @click.exact="(e) => !readonly && paint(row, column, color, e.target)"
           v-for="row in rows"
           :key="row"
+          :width="cellDimension"
+          :height="cellDimension"
           :style="{
             backgroundColor:
               board.grid &&
@@ -32,11 +34,16 @@ import { rgbToHex } from "../colorUtils";
 const props = withDefaults(
   defineProps<{
     artboard: ArtBoard | null;
-    color: string;
+    color?: string;
+    cellDimension?: string;
     readonly?: boolean;
+    hasGridLines?: boolean;
   }>(),
   {
+    color: "#000",
+    cellDimension: "30px",
     readonly: false,
+    hasGridLines: true,
   }
 );
 
@@ -87,15 +94,11 @@ function paint(x: number, y: number, color: string, el: HTMLElement) {
 </script>
 
 <style scoped>
-table {
-  min-width: 600px;
-  width: 600px;
-}
 td {
   display: table-cell;
-  border: 1px solid darkgrey;
-  width: 30px;
-  height: 30px;
   overflow: hidden;
+}
+.grid-lines td {
+  border: 1px solid darkgrey;
 }
 </style>

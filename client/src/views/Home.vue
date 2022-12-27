@@ -4,32 +4,33 @@
       :artboard="grid"
       :active-cell="activeCell"
       :color="selectedColor"
+      :hasGridLines="hasGridLines"
       @update="onArtUpdate"
     />
-    <div class="absolute -top-10 right-0">
-      <button class="my-focus-ring float-left mr-2" @click="recomputeColor">
-        <refresh-icon />
-      </button>
-      <ColorPicker class="my-focus-ring" v-model="selectedColor" />
-    </div>
+    <controls
+      has-color-picker
+      @onColorUpdate="(color) => (selectedColor = color)"
+      @onToggleGridLines="(toggled) => (hasGridLines = toggled)"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { ref, inject, computed } from "vue";
 import Art from "../components/Art.vue";
-import ColorPicker from "../components/ColorPicker.vue";
+import Controls from "../components/Controls.vue";
 import Api from "../service/api";
 import type { ArtBoard } from "../components/Art.vue";
-import RefreshIcon from "../components/RefreshIcon.vue";
+
 import useRequest, { updateCache } from "../composables/useRequest";
 import { getDefaultDateFormat } from "../dateUtils";
 import { randomHexColor } from "../colorUtils";
 
 export default {
-  components: { Art, ColorPicker, RefreshIcon },
+  components: { Art, Controls },
   setup() {
     const selectedColor = ref(randomHexColor());
+    const hasGridLines = ref(true);
     const activeCell = ref([]);
     const $api = inject<Api>("$api");
     const { data, error } = useRequest<ArtBoard>(`/api`, {
@@ -37,10 +38,6 @@ export default {
       dedupingInterval: 1000,
       revalidateOnFocus: true,
     });
-
-    function recomputeColor() {
-      selectedColor.value = randomHexColor();
-    }
 
     async function onArtUpdate(color: string, x?: number, y?: number) {
       // If only color is incoming, then we can just update the selected color
@@ -75,7 +72,7 @@ export default {
       grid,
       error,
       selectedColor,
-      recomputeColor,
+      hasGridLines,
       activeCell,
       onArtUpdate,
     };

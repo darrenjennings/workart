@@ -1,11 +1,10 @@
 <template>
-  <div class="container flex justify-center">
+  <div class="absolute flex justify-center">
     <Art
-      class="w-full"
       v-if="data !== undefined"
       :artboard="data"
-      :color="color"
       readonly
+      :hasGridLines="hasGridLines"
     />
     <div v-if="error">
       <b>{{ error.status }}</b>
@@ -15,29 +14,30 @@
         (error.status == "404" ? "Not found." : "There was an error.")
       }}</span>
     </div>
+    <controls @onToggleGridLines="(toggled) => (hasGridLines = toggled)" />
   </div>
 </template>
 
 <script lang="ts">
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import useRequest from "../composables/useRequest";
 
 import Art from "../components/Art.vue";
+import Controls from "../components/Controls.vue";
 import type { ArtBoard } from "../components/Art.vue";
 
 export default {
-  components: { Art },
-  setup(props, config) {
+  components: { Art, Controls },
+  setup() {
     const route = useRoute();
-    const color = ref("#000");
-
+    const hasGridLines = ref(true);
     const { data, error } = useRequest<ArtBoard>(`/api/${route.params.date}`);
 
     return {
       data,
       error,
-      color,
+      hasGridLines,
     };
   },
 };

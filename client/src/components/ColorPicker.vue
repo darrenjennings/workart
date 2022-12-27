@@ -16,8 +16,6 @@ export default {
 <style scoped>
 input {
   border-radius: 10%;
-  height: 30px;
-  width: 30px;
   border: 1px solid darkgrey;
   outline: none;
   -webkit-appearance: none;

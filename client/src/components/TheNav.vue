@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex w-content font-mono">
+  <nav class="flex font-mono w-content">
     <ol class="flex my-4">
       <li>
         <router-link :to="{ name: 'Home' }">Home</router-link>

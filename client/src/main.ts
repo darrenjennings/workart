@@ -4,6 +4,7 @@ import Home from "./views/Home.vue";
 import ViewArtBoard from "./views/ViewArtBoard.vue";
 import Archive from "./views/Archive.vue";
 import About from "./views/About.vue";
+import OneYear from "./views/OneYear.vue";
 import "./index.css";
 import { createRouter, createWebHistory } from "vue-router";
 import Api from "./service/api";
@@ -30,6 +31,11 @@ const router = createRouter({
       path: "/about",
       component: About,
       name: "About",
+    },
+    {
+      path: "/year/:year",
+      component: OneYear,
+      name: "Year",
     },
   ],
 });
