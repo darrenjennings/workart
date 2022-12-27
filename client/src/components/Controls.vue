@@ -38,7 +38,7 @@ const props = withDefaults(
 const emit = defineEmits(["onColorUpdate", "onToggleGridLines"]);
 
 const hasGridLines = ref(true);
-const selectedColor = ref(randomHexColor());
+const selectedColor = ref();
 
 function recomputeColor() {
   selectedColor.value = randomHexColor();
@@ -49,6 +49,9 @@ function toggleGridLines() {
   hasGridLines.value = !hasGridLines.value;
   emit("onToggleGridLines", hasGridLines.value);
 }
+
+// Initialize
+recomputeColor();
 </script>
 
 <style scoped>
