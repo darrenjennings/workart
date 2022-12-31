@@ -7,7 +7,7 @@
       :hasGridLines="hasGridLines"
       @update="onArtUpdate"
     />
-    <controls
+    <Controls
       has-color-picker
       :selected-color="selectedColor"
       @onColorUpdate="(color) => (selectedColor = color)"

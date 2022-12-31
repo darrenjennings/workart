@@ -11,17 +11,21 @@
       <button
         title="Pick a random new color"
         class="my-focus-ring float-left"
-        @click="recomputeColor"
+        @click="recomputeColor(randomHexColor())"
       >
-        <refresh-icon />
+        <RefreshIcon />
       </button>
-      <ColorPicker class="my-focus-ring" v-model="selectedColor" />
+      <ColorPicker
+        class="my-focus-ring"
+        v-model="newColor"
+        @change="onColorPickerUpdated"
+      />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import RefreshIcon from "../components/RefreshIcon.vue";
 import ColorPicker from "../components/ColorPicker.vue";
 import { randomHexColor } from "../colorUtils";
@@ -42,17 +46,29 @@ const emit = defineEmits(["onColorUpdate", "onToggleGridLines"]);
 const hasGridLines = ref(true);
 const newColor = ref(props.selectedColor);
 
-function recomputeColor() {
-  newColor.value = randomHexColor();
-  emit("onColorUpdate", newColor.value);
-}
-
 function toggleGridLines() {
   hasGridLines.value = !hasGridLines.value;
   emit("onToggleGridLines", hasGridLines.value);
 }
 
-recomputeColor();
+function recomputeColor(color: string) {
+  newColor.value = color;
+  emit("onColorUpdate", newColor.value);
+}
+
+function onColorPickerUpdated(val: Event) {
+  recomputeColor((val.currentTarget as HTMLInputElement).value);
+}
+
+// handle inputs such that the color picker and the passed in selected color can
+// update the color.
+watch(
+  () => props.selectedColor,
+  () => recomputeColor(props.selectedColor)
+);
+watch(newColor, () => recomputeColor(newColor.value));
+
+recomputeColor(randomHexColor());
 </script>
 
 <style scoped>

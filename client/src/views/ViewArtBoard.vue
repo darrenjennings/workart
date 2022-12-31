@@ -14,7 +14,7 @@
         (error.status == "404" ? "Not found." : "There was an error.")
       }}</span>
     </div>
-    <controls @onToggleGridLines="(toggled) => (hasGridLines = toggled)" />
+    <Controls @onToggleGridLines="(toggled) => (hasGridLines = toggled)" />
   </div>
 </template>
 
