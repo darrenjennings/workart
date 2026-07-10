@@ -36,6 +36,7 @@ const router = createRouter({
       path: "/year/:year",
       component: OneYear,
       name: "Year",
+      props: true,
     },
   ],
 });
