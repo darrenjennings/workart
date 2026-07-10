@@ -33,7 +33,7 @@
       <a
         target="_blank"
         class="text-blue-600 font-bold underline"
-        href="https://guuu.io"
+        href="https://github.com/darrenjennings"
         >Darren Jennings</a
       >
     </div>
