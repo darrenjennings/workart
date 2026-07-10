@@ -19,6 +19,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import Art from "../components/Art.vue";
-import { data } from "../data/data2022";
+import { data as archiveData } from "../data/data_archive";
+
+const props = defineProps<{
+  year: string;
+}>();
+
+const data = computed(() =>
+  archiveData.filter((art) => art.key.startsWith(`${props.year}-`)),
+);
 </script>
